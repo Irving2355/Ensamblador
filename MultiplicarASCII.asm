@@ -42,11 +42,46 @@ LEER_DIGITO:
 CALCULAR:
     MOV AX,BX
     SHL AX,1 ;AX=AX*2
-    MOV [2002h],AX
-    INT 3
+    MOV [2002h],AX ;guardo el resultado en 2002h
+    ;INT 3
+           
+    MOV AH,09h
+    LEA DX,msg2
+    INT 21h
     
+    CALL PRINT_DEC
     
+    MOV AH,4Ch
+    INT 21h
+
+MAIN ENDP 
+
+PRINT_DEC PROC
+    MOV AX,[2002h]
     
+    ;INICIALIZAR REGISTROS
+    XOR CX,CX ;CONTADOR DE DIGITOS
+    MOV BX,10 ;DIVISOR            
+    
+    EXTRACT_DIGITS:
+        XOR DX,DX 
+        DIV BX ;DX=AX/BX AX=COCIENTE Y dX RESIDUO
+        PUSH DX ;GUARDA EL RESIDUIO EN LA PILA
+        INC CX
+        TEST AX,AX ;IF(AX==0)
+        JNZ EXTRACT_DIGITS;ELSE LLAMA FUNCION
+        
+    PRINT_LOOP:
+        POP DX
+        ADD DL,'0'
+        MOV AH,02h ;IMPRIME POR CARACTER
+        INT 21h
+        LOOP PRINT_LOOP
+        
+    RET
+PRINT_DEC ENDP
+
+END MAIN
     
     
     
