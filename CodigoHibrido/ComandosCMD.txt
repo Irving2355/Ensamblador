@@ -1,0 +1,5 @@
+nasm -f win64 suma.asm -o suma.o
+
+gcc main.c suma.o -o programa.exe
+
+./programa.exe
