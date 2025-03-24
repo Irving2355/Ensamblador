@@ -8,27 +8,31 @@ section .text
 compare_and_print:
     sub rsp,40
 
+    ; Guarda los argumentos en registros temporales
+    mov r8, rcx               ; r8 = a
+    mov r9, rdx               ; r9 = b
+
     cmp rcx,rdx 
     je numero_iguales
     jg a_es_mayor
-    jl b_es_mayor
+    jmp b_es_mayor
 
-b_es_mayor:
-    ;si b es mayor
-    mov rax,rdx 
-    mov rcx,fmt_greater
-    call printf
-    add rsp,40
-    ret
 a_es_mayor:
-    mov rax,rcx
     mov rcx,fmt_greater
+    mov rdx,r8
     call printf
     add rsp,40
     ret 
+b_es_mayor:
+    ;si b es mayor
+    mov rcx,fmt_greater
+    mov rdx,r9 
+    call printf
+    add rsp,40
+    ret
 numero_iguales:
-    mov rax,rcx
     mov rcx,fmt_equal
+    mov rdx,r8
     call printf
     add rsp,40
     ret 
